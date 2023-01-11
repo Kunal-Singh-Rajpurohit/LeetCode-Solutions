@@ -1,13 +1,30 @@
 class Solution {
 public:
     int diagonalSum(vector<vector<int>>& mat) {
-     int n = mat.size() ;
-     int ans = 0 ;
         
-     for(int i = 0 ; i < n ; i++){
-        ans = ans + mat[i][i] + mat[i][n - i - 1] ;  
-      }
-      ans = (n & 1) ? ans - mat[n/2][n/2] : ans ;//if n is odd then we have to subtract mat[n/2][n/2] from the ans because we add it twice earlier.
-      return ans ;  
+        // side length
+        int n = mat.size();
+        
+        // mid point index
+        int mid = n / 2;
+        
+        // summation of diagonal element
+        int summation = 0;
+        
+        for( int i = 0 ; i < n ; i++ ){
+            
+            // primary diagonal
+            summation += mat[i][i];
+            
+            // secondary diagonal
+            summation += mat[n-1-i][i];
+        }
+                
+        if( n % 2 == 1 ){
+            
+            // remove center element (repeated) on odd side-length case
+            summation -= mat[mid][mid];
+        }        
+        return summation;
     }
 };
