@@ -1,23 +1,17 @@
 class Solution {
-    public int[] sortedSquares(int[] nums) {
-        int left = 0;
-        int right = nums.length -1;
-        int index = nums.length- 1;
-        int result[] = new int [nums.length];
-        while(left<=right)
-        {
-            if(Math.abs(nums[left])>Math.abs(nums[right]))
-            {
-                result[index] = nums[left] * nums[left];
-                left++;
-            }
-            else
-            {
-                result[index] = nums[right] * nums[right];
-                right--;
-            }
-            index--;
+public:
+    vector<int> sortedSquares(vector<int>& a) {
+        int m = 0, n = a.size(), k = 0;
+        vector <int> ret(n, 0);
+        while (m < n && a[m] < 0) m++;
+        for (auto &x : a) x *= x;
+        int i = m - 1, j = m;
+        while (i >= 0 && j < n) {
+            if (a[i] < a[j]) ret[k++] = a[i--];
+            else ret[k++] = a[j++];
         }
-        return result;
+        while (i >= 0) ret[k++] = a[i--];
+        while (j <  n) ret[k++] = a[j++];
+        return ret;
     }
-}``
+};
