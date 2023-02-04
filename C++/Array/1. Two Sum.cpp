@@ -1,19 +1,21 @@
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        int a=0;
-        int b=0;
-        for(int i=0;i<nums.size()-1;i++)
-        {
-            for(int j=i+1;j<nums.size();j++)
-            {
-                if(nums[i]+nums[j]==target)
-                {
-                    a=i;
-                    b=j;
-                }
-            }
-        }
-        return {a,b};
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n;
+    cin>>n;
+    int a[n];
+    for(int i=0;i<n;i++){
+        cin>>a[i];
     }
-};
+    sort(a,a+n);
+    int s=a[0];
+    int b=a[n-1];
+    int sum=s+b;
+    if(sum%2==0){
+        cout<<1<<'\n';
+    }
+    else{
+        cout<<0<<'\n';
+    }
+}
