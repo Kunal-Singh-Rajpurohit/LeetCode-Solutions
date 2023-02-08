@@ -1,22 +1,23 @@
 class Solution {
 public:
- 
-   long long int jump(vector<int> nums , int curr, int dest)
-    {       
-            if(curr>=dest) return 0; 
-            long long int tmp=INT_MAX;
-			
-            //Try Every jump 1 to nums[curr] jump
-            //and find minimum steps need to reach to end
-			
-            for(int i=1;i<=nums[curr];i++)
-            {
-                tmp=min(tmp,1+jump(nums,curr+i,dest));  
-            } 
-         return tmp;  
+    int jump(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n,n);
+    dp[n-1]=0;
+    for(int i=n-2;i>=0;i--) {
+        int range = i+nums[i];
+        if (range >= n-1) { 
+            dp[i]=1;
+            continue;
+        }
+        for(int j = range; j > i; j--) {
+            if(dp[j]==1) {
+                dp[i]=2;
+                break;
+            }
+            dp[i] = min(dp[i],dp[j]+1);
+        }
     }
-    
-    int jump(vector<int>& nums) { 
-         return jump(nums,0,nums.size()-1);
-    }
+    return dp[0];    
+}
 };
