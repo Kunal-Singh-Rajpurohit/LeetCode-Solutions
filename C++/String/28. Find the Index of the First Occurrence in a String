@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if( haystack.size() < needle.size() ) return -1;
+        vector<int> check;
+        for( int i=0 ; i<haystack.size()-needle.size()+1 ; i++){
+            if( haystack[i] == needle[0] ) check.push_back(i);
+        }
+        for( int i=0 ; i<check.size() ; i++){
+            for( int j = check[i] ; j<check[i]+needle.size() ; ){
+                if( haystack[j] != needle[j-check[i]] ) break;
+                else j++;
+                if( j == check[i]+needle.size() ) return check[i];
+            }
+        }
+        return -1;
+    }
+};
