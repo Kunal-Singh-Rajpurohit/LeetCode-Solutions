@@ -1,0 +1,34 @@
+class Solution {
+public:
+    long long minimumTime(vector<int>& t, int tt) {
+        
+        sort(t.begin(),t.end());
+        long long int f,l,mid,i,n=t.size(),mintime,temp;
+
+        f = 0;
+        l = 1LL*tt*t[n-1];
+        mintime = 1LL*tt*t[n-1];
+        while(f < l)
+        {
+            mid = (l + f)/2;
+            temp=0;
+            for(i=0;i<n;i++)
+            {
+                temp += mid/t[i];
+            }
+
+            if(temp >= tt)
+            {
+                mintime = min(mintime,mid);
+                l = mid;
+            }
+            else
+            {
+                f = mid + 1;
+            }
+
+        }
+
+        return mintime;
+    }
+};
