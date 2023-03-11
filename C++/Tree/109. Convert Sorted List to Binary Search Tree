@@ -1,0 +1,23 @@
+class Solution {
+public:
+
+    TreeNode* solve(int s, int e, vector<int>& nums) {
+        if(s > e) return nullptr;
+        int mid = s + (e-s)/2;
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = solve(s,mid-1,nums);
+        root->right = solve(mid+1,e,nums);
+        return root;
+    }
+
+    TreeNode* sortedListToBST(ListNode* head) {
+        vector<int> v;
+        ListNode* temp = head; 
+        while(temp != NULL) {
+            v.push_back(temp->val);
+            temp = temp->next;
+        }
+
+        return solve(0,v.size()-1,v);
+    }
+};
