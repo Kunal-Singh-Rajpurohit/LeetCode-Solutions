@@ -1,0 +1,41 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    struct comp{ // custom comparator function for sorting in priority queue
+        bool operator()(ListNode *a,ListNode *b){
+            return (a->val)>(b->val);
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+       ListNode *ans=NULL,*prev=NULL;  // ans => head of sorted merged list
+       priority_queue<ListNode*,vector<ListNode*>,comp>pq; // pq for top element with smallest value
+
+       for(auto &curr:lists){
+           if(!curr)continue; // ignore if list is empty
+           pq.push(curr);  // push head node of current list in the pq 
+       }
+       while(!pq.empty()){
+           ListNode *curr=pq.top(); // extract top(smallest) element
+           pq.pop();  // delete the top node
+           if(!ans){
+               ans=curr;  // store the head of merged sorted list 
+           }else{
+               prev->next=curr; // point the next pointer of previous node(with smallest value) to curr node
+           }
+           prev=curr;  // mark current node as prev node for further iterations
+           if(curr->next){ check if the current list has yet not reached the end node
+               pq.push(curr->next); // push the next node of current list 
+           }
+       }
+       return ans; // return the head of merged sorted list
+    }
+};
