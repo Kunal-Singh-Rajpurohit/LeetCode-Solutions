@@ -1,0 +1,81 @@
+class Solution {
+public:
+  int detectcycle(vector<int>adj[],int node,vector<bool>&visited,vector<bool>&curvisit){
+
+       if(curvisit[node]) return -1;
+       if(visited[node]) return 0;
+       curvisit[node]=true;
+       visited[node]=true;
+
+        for(auto it: adj[node]){
+           
+           if(detectcycle(adj,it,visited,curvisit)==-1){
+            return -1;
+           }
+        }
+        curvisit[node]=false;
+
+return 0;
+   }
+
+   vector<int> helper(vector<int>adj[],int node,unordered_map<int,vector<int>>&mp,string& colors){
+
+       if(mp.find(node)!=mp.end()){
+           return mp[node];
+       }
+       vector<int> dp(26,0);
+
+       for(auto it: adj[node]){
+
+           auto temp = helper(adj,it,mp,colors);
+            
+            for(int i=0;i<26;i++){
+                dp[i]= max(dp[i],temp[i]);
+            }
+
+       }
+
+       dp[colors[node]-'a']++;
+
+       mp[node]=dp;
+       return dp;
+
+
+        
+   }
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+
+        int n= colors.size();
+        vector<bool> visited(n);
+
+          vector<int> adj[n];
+          for(auto it: edges){
+              adj[it[0]].push_back(it[1]);
+          }
+
+//------------Detect Cycle in a graph--------------------------
+          for(int i=0;i<n;i++){
+          
+              if(!visited[i]){
+                    vector<bool>currvisited(n);
+                if( detectcycle(adj,i,visited,currvisited)==-1){
+                    return -1;
+                }
+              }
+          }
+//--------------------------------------------------------------
+//      Bottom-Up approach to find the frequence of colors 
+          unordered_map<int,vector<int>>mp;
+           int maxi=0;
+           for(int i=0;i<n;i++){
+               if(mp.find(i)==mp.end()){
+                auto  temp=  helper(adj,i,mp,colors);
+                for(auto it:temp) maxi=max(maxi,it);
+               }
+           }
+return maxi;
+
+
+        
+    }
+};
