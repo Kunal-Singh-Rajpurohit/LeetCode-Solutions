@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int dp[1001][2001];
+    int solve(vector<vector<int>>& piles, int i, int k) {
+        
+        //base case
+        if(i >= piles.size()) {
+            return 0;
+        }
+        if(dp[i][k] != -1) {
+            return dp[i][k];
+        }
+
+        // not taken me i+1 pe chala jaye ga
+        int notTaken = solve(piles, i+1, k);
+        // taken me traverse kare ga apne andar aur agr bach gaya to
+        // dusre pile me jaye ga.
+        int taken = 0;
+        int sum = 0;
+        for(int j = 0; j < min((int)piles[i].size(), k); j++) {
+            sum += piles[i][j];
+            // Ab aage ka bhi dekh lo
+            taken = max(taken , sum + solve(piles, i+1, k-(j+1)));
+        }
+
+        return dp[i][k] = max(taken, notTaken);
+    }
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+
+        int n = piles.size();
+        memset(dp, -1, sizeof(dp));
+        return solve(piles, 0, k);
+    }
+};
