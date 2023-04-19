@@ -1,0 +1,19 @@
+class Solution {
+private:
+    int ans = 0;   
+    pair<int,int> solve(TreeNode* root){
+        if(!root) return {0,0};
+
+        auto [l1,l2] = solve(root->left);
+        auto [r1,r2] = solve(root->right);
+
+        ans = max({ans,l2,r1});
+
+        return {1+l2,1+r1};
+    }
+public:
+    int longestZigZag(TreeNode* root) {
+        solve(root);
+        return ans;
+    }
+};
