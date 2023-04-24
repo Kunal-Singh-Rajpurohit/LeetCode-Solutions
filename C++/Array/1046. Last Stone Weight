@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) {
+
+        //first we will be trying the brute force approach
+        priority_queue<int>pq;
+        for(auto e:stones){
+            pq.push(e);
+
+        }
+        
+        while(pq.size()>=2){
+            int l1=pq.top();
+            pq.pop();
+            int l2=pq.top();
+            pq.pop();
+            if(l1==l2){
+                continue;
+            }
+            if(l1>l2){
+                swap(l1,l2);
+            }
+            pq.push(l2-l1);
+            
+        }
+        if(pq.size()){
+            return pq.top();
+        }
+        return 0;
+    }
+};
