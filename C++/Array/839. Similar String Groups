@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isSimilar(string a,string b){
+        int count=0;
+        for(int i=0;i<a.size();i++){
+            if(a[i]!=b[i])count++;
+        }
+        return count<=2?true:false;
+    }
+    void dfs(int ind,vector<int>&vis,vector<string>&strs){
+        vis[ind]=1;
+        for(int i=0;i<strs.size();i++){
+            if(!vis[i]){
+                if(isSimilar(strs[ind],strs[i]))
+                dfs(i,vis,strs);
+            }
+        }
+    }
+    int numSimilarGroups(vector<string>& strs) {
+        vector<int>vis(strs.size(),0);
+        int ans=0;
+        for(int i=0;i<strs.size();i++){
+            if(!vis[i]){
+                ans++;
+                dfs(i,vis,strs);
+            }
+        }
+        return ans;
+    }
+};
