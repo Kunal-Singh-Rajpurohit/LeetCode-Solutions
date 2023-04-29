@@ -1,0 +1,78 @@
+class DisjointSet {
+private:
+    vector<int> parent, rank;
+
+public:
+    DisjointSet(int n) {
+        parent.resize(n+1, 0);
+        rank.resize(n+1, 0);
+
+        for(int i=0; i<n+1; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int findParent(int node) {
+        if(node == parent[node])
+            return node;
+        
+        return parent[node] = findParent(parent[node]);
+    }
+
+    void unionByRank(int u, int v) {
+        int upU = findParent(u);
+        int upV = findParent(v);
+
+        if(upU == upV)
+            return;
+        
+        if(rank[upU] < rank[upV]) {
+            parent[upU] = upV;
+        }
+        else {
+            parent[upV] = upU;
+            rank[upU]++;
+        }
+    }
+
+    bool isParentEqual(int u, int v) {
+        return (findParent(u) == findParent(v));
+    }
+};
+
+class Solution {
+    bool static compare(const vector<int> &a, const vector<int> &b) {
+        return (a[2] < b[2]);
+    }
+
+public:
+    vector<bool> distanceLimitedPathsExist(int nodes, vector<vector<int>>& edges, vector<vector<int>>& queries) {
+        int n = queries.size();
+
+        vector<bool> ans(n, false);
+        
+        for(int i=0; i<n; i++) {
+            queries[i].push_back(i);
+        }
+
+        sort(edges.begin(), edges.end(), compare);
+        sort(queries.begin(), queries.end(), compare);
+
+        DisjointSet ds(nodes);
+        int i=0;
+
+        for(auto &query : queries) {
+            int u = query[0];
+            int v = query[1];
+            int limit = query[2];
+            int qId = query[3];
+
+            for(; (i < edges.size()) && (edges[i][2] < limit); i++) {
+                ds.unionByRank(edges[i][0], edges[i][1]);
+            }
+            ans[qId] = ds.isParentEqual(u, v);
+        }
+
+        return ans;
+    }
+};
