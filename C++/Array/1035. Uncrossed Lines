@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+    // Create a 2D vector 'ans' with dimensions (nums1.size()+1) x (nums2.size()+1)
+    vector<vector<int>> ans(nums1.size()+1, vector<int>(nums2.size()+1));
+
+    // Initialize the first column of 'ans' with 0
+    for (int i = 0; i <= nums1.size(); i++) {
+        ans[i][0] = 0;
+    }
+
+    // Initialize the first row of 'ans' with 0
+    for (int i = 0; i <= nums2.size(); i++) {
+        ans[0][i] = 0;
+    }
+
+    // Iterate over the elements of nums1 and nums2
+    for (int i = 1; i <= nums1.size(); i++) {
+        for (int j = 1; j <= nums2.size(); j++) {
+            // If the current elements from nums1 and nums2 are equal
+            if (nums1[i-1] == nums2[j-1]) {
+                // Set ans[i][j] to 1 + ans[i-1][j-1]
+                ans[i][j] = 1 + ans[i-1][j-1];
+            }
+            else {
+                // Set ans[i][j] to the maximum of ans[i-1][j] and ans[i][j-1]
+                ans[i][j] = max(ans[i-1][j], ans[i][j-1]);
+            }
+        }
+    }
+
+    // Return the value at the bottom-right corner of 'ans'
+    return ans[nums1.size()][nums2.size()];
+}
+};
